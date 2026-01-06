@@ -4,9 +4,9 @@
  *                                                                        *
  *  Software Version: 2025.4                                              *
  *                                                                        *
- *  Release Date    : Tue Nov 11 18:01:30 PST 2025                        *
+ *  Release Date    : Thu Dec 11 10:35:33 PST 2025                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2025.4.0                                            *
+ *  Release Build   : 2025.4.1                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -110,7 +110,7 @@ Gamma correction function for Grayscale image, speciallized based on the type of
     Sub = Shi-Pow; // adjust to accuracy.
     pixOut= Sub.to_int();
 
-    #ifndef DEBUG
+    #ifdef DEBUG
     cout << "==========================Debug========================"<< endl;
     cout << "RGB_IN              " << pixIn << endl;
     cout << "Divide by 255       " << Div << endl;
