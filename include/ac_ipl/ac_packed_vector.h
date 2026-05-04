@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2025.4                                              *
+ *  Software Version: 2026.1                                              *
  *                                                                        *
- *  Release Date    : Thu Dec 11 10:35:33 PST 2025                        *
+ *  Release Date    : Tue Feb 10 18:37:14 PST 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2025.4.1                                            *
+ *  Release Build   : 2026.1.0                                            *
  *                                                                        *
  *  Copyright 2023 Siemens                                                *
  *                                                                        *
@@ -50,11 +50,15 @@
 //        underlying data.
 //    - void pack_data(ac_array<T, AC_WORDS> ac_arr_in) :
 //        Packs AC array of type T and size AC_WORDS into the underlying data.
+//    - void pack_data(ac_bank_array_vary<T, AC_WORDS> bank_arr_in) :
+//        Packs an ac_bank_array_vary of type T and size AC_WORDS into the underlying data.
 //    - void unpack_data(T cpp_arr_out[AC_WORDS]) const :
 //        Unpacks underlying data to a standard C++ array of type T and
 //        size AC_WORDS.
 //    - void unpack_data(ac_array<T, AC_WORDS> &ac_arr_out) const :
 //        Unpacks underlying data to an ac_array of type T and size AC_WORDS.
+//    - void unpack_data(ac_bank_array_vary<T, AC_WORDS> &bank_arr_out) const :
+//        Unpacks underlying data to an ac_bank_array_vary of type T and size AC_WORDS.
 //    - void set_data(ac_int<T::width *AC_WORDS, false> data_in) :
 //        Sets underlying data to data_in.
 //    - ac_int<T::width *AC_WORDS, false> get_data() const :
@@ -78,6 +82,8 @@
 //        Constructs with const standard C++ array. Uses pack_data() method.
 //    - ac_packed_vector(ac_array<T, AC_WORDS> ac_arr_in) :
 //        Constructs with ac_array. Uses pack_data() method.
+//    - ac_packed_vector(ac_bank_array_vary<T, AC_WORDS> bank_arr_in) :
+//        Constructs with ac_bank_array_vary. Uses pack_data() method.
 //    - ac_packed_vector(const T &scalar) :
 //        Sets all elements to input scalar of type T.
 //    - ac_packed_vector(const c_type scalar) :
@@ -109,6 +115,8 @@
 //        Assigns from standard const C++ array. Uses pack_data() method.
 //    - void operator= (ac_array<T, AC_WORDS> ac_arr_in) :
 //        Assigns from ac_array. Uses pack_data() method.
+//    - void operator= (ac_bank_array_vary<T, AC_WORDS> bank_arr_in) :
+//        Assigns from ac_bank_array_vary. Uses pack_data() method.
 //    - void operator= (const T &scalar) :
 //        Assigns an input scalar of type T to all elements.
 //    - void operator= (const c_type scalar) :
@@ -168,8 +176,8 @@
 #ifndef _INCLUDED_AC_PACKED_VECTOR_H_
 #define _INCLUDED_AC_PACKED_VECTOR_H_
 #include <ac_int.h>
+#include <ac_bank_array.h>
 #include <ac_array.h>
-#include <type_traits> // Needed to use "std::is_same" later.
 
 #ifndef __SYNTHESIS__
 #include <string>
@@ -384,6 +392,14 @@ public:
     }
   }
 
+  void pack_data(ac_bank_array_vary<T, AC_WORDS> bank_arr_in) {
+    #pragma hls_unroll yes
+    PACK_FROM_BANK_ARRAY: for (int idx = 0; idx < AC_WORDS; idx++) {
+      #pragma hls_waive UMR
+      data.set_slc(idx*T::width, bank_arr_in[idx].template slc<T::width>(0));
+    }
+  }
+
   void unpack_data(T cpp_arr_out[AC_WORDS]) const {
     #pragma hls_unroll yes
     UNPACK_TO_CPP_ARRAY: for (int idx = 0; idx < AC_WORDS; idx++) {
@@ -395,6 +411,13 @@ public:
     #pragma hls_unroll yes
     UNPACK_TO_AC_ARRAY: for (int idx = 0; idx < AC_WORDS; idx++) {
       ac_arr_out[idx].set_slc(0, data.template slc<T::width>(idx*T::width));
+    }
+  }
+
+  void unpack_data(ac_bank_array_vary<T, AC_WORDS> &bank_arr_out) const {
+    #pragma hls_unroll yes
+    UNPACK_TO_BANK_ARRAY: for (int idx = 0; idx < AC_WORDS; idx++) {
+      bank_arr_out[idx].set_slc(0, data.template slc<T::width>(idx*T::width));
     }
   }
 
@@ -452,6 +475,10 @@ public:
 
   ac_packed_vector(ac_array<T, AC_WORDS> ac_arr_in) {
     pack_data(ac_arr_in);
+  }
+
+  ac_packed_vector(ac_bank_array_vary<T, AC_WORDS> bank_arr_in) {
+    pack_data(bank_arr_in);
   }
 
   // Initialization with scalar of base type.
@@ -556,6 +583,10 @@ public:
 
   void operator= (ac_array<T, AC_WORDS> ac_arr_in) {
     pack_data(ac_arr_in);
+  }
+
+  void operator= (ac_bank_array_vary<T, AC_WORDS> bank_arr_in) {
+    pack_data(bank_arr_in);
   }
 
   // Assignment with scalar of base type.

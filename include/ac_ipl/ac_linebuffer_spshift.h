@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2025.4                                              *
+ *  Software Version: 2026.1                                              *
  *                                                                        *
- *  Release Date    : Thu Dec 11 10:35:33 PST 2025                        *
+ *  Release Date    : Tue Feb 10 18:37:14 PST 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2025.4.1                                            *
+ *  Release Build   : 2026.1.0                                            *
  *                                                                        *
  *  Copyright 2023 Siemens                                                *
  *                                                                        *
@@ -51,11 +51,7 @@ class ac_linebuffer_spshift
 public:
   ac_linebuffer_spshift() {
     #ifndef DONT_UNINITIALIZE_LINEBUFFER
-    // init_array causes catapult compilation errors if used with ac_bank_array.h linebuffer.
-    // The compiler guard below is a temp. fix to avoid that.
-    #ifndef __AC_BANK_ARRAY_H
     ac::init_array<AC_VAL_DC>(&line_buffer[0][0], TOTAL_LINES*AC_WIDTH/2);
-    #endif
     ac::init_array<AC_VAL_DC>(&read_cache[0], TOTAL_LINES);
     ac::init_array<AC_VAL_DC>(&write_cache[0], TOTAL_LINES);
     din_cache.template set_val<AC_VAL_DC>();
@@ -125,13 +121,7 @@ public:
   }
   
 private: 
-
-  //Usage of AC_BANK_ARRAY is not for production, it is enabled only if a Catapult provided AC_BANK_ARRAY library is included in the design.
-  #ifdef __AC_BANK_ARRAY_H
-  ac_bank_array_2D<ac_int<IN_TYPE::width*2,false>, TOTAL_LINES, AC_WIDTH/2> line_buffer;
-  #else
   ac_int<IN_TYPE::width*2,false> line_buffer[TOTAL_LINES][AC_WIDTH/2];
-  #endif
   ac_int<IN_TYPE::width*2,false> write_cache[TOTAL_LINES],read_cache[TOTAL_LINES];
   ac_int<IN_TYPE::width*2,false> din_cache;
 };

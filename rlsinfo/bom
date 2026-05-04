@@ -12,6 +12,9 @@
 ./include/ac_ipl/ac_window_v3/ac_shift_N_v3.h
 ./include/ac_ipl/ac_window_v3/ac_window_def_v3.h
 ./include/ac_ipl/ac_window_v3/ac_window_standard_v3.h
+./include/ac_ipl/ac_window_v3/ac_flag_gen_lf_v3.h
+./include/ac_ipl/ac_window_v3/ac_flag_gen_out_lf_v3.h
+./include/ac_ipl/ac_window_v3/ac_window_lf_v3.h
 ./include/ac_ipl/ac_window_v3/ac_window_v3.h
 ./include/ac_ipl/ac_pixels.h
 ./include/ac_ipl/ac_packed_vector.h
@@ -50,11 +53,13 @@
 ./include/ac_ipl/ac_localcontrastnorm.h
 ./include/ac_ipl/ac_dwt_a.h
 ./include/ac_ipl/ac_filter_2d.h
+./include/ac_ipl/ac_filter_2d_framesync.h
 ./include/ac_ipl/ac_gamma.h
 ./include/ac_ipl/ac_harris.h
 ./include/ac_ipl/ac_opticalflow.h
 ./include/ac_ipl/ac_denoise_filter.h
 ./include/ac_ipl/ac_median_2d.h
+./include/ac_ipl/ac_median_2d_framesync.h
 ./include/ac_window_structs.h
 ./include/ac_buffer_2d.h
 ./include/ac_window.h

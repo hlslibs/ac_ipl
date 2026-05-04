@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2025.4                                              *
+ *  Software Version: 2026.1                                              *
  *                                                                        *
- *  Release Date    : Thu Dec 11 10:35:33 PST 2025                        *
+ *  Release Date    : Tue Feb 10 18:37:14 PST 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2025.4.1                                            *
+ *  Release Build   : 2026.1.0                                            *
  *                                                                        *
  *  Copyright 2023 Siemens                                                *
  *                                                                        *
@@ -32,7 +32,7 @@
 #define _INCLUDED_MEDIAN2D_HLS_H_
 
 #if (defined(__GNUC__) && (__cplusplus < 201103L))
-#error Please use C++11 or a later standard for compilation.
+#error Please use C++17 or a later standard for compilation.
 #endif
 #if (defined(_MSC_VER) && (_MSC_VER < 1920) && !defined(__EDG__))
 #error Please use Microsoft VS 2019 or a later standard for compilation.
@@ -41,7 +41,7 @@
 #include <ac_int.h>
 #include <ac_channel.h>
 #include <ac_ipl/ac_window_v2_lflush.h>
-#include <ac_math/ac_brick_sort.h>
+#include <ac_math/ac_bitonic_sort.h>
 
 
 #include <mc_scverify.h>
@@ -75,6 +75,20 @@ private:
   typedef ac_int<ac::nbits<AC_IMG_HEIGHT_C>::val, false> height_type; // Renamed from HTYPE
   typedef ac_window_v2_lflush_2d<Pix_type, AC_IMG_HEIGHT_C, AC_IMG_WIDTH_C, AC_WIN_SIZE_C, AC_WIN_SIZE_C, BUFF_TYPE_C, AC_PMODE_C> window_type; // Renamed from winType
   window_type window; // Updated usage
+
+static constexpr int arraySize =
+    (AC_WIN_SIZE_C == 3) ? 16 :
+    (AC_WIN_SIZE_C == 5) ? 32 :
+    (AC_WIN_SIZE_C == 7) ? 64 :
+    (AC_WIN_SIZE_C == 9) ? 128 :
+    16;
+static constexpr int WN_SIZE_SQUARE = (AC_WIN_SIZE_C == 3) ? 9 :
+    (AC_WIN_SIZE_C == 5) ? 25 :
+    (AC_WIN_SIZE_C == 7) ? 49 :
+    (AC_WIN_SIZE_C == 9) ? 81 :
+    9;
+ 
+
 public:
   ac_median_2d() {}
   #pragma hls_design interface
@@ -109,21 +123,32 @@ public:
 
         bool output_valid = vld_out;;
         if (vld_out) {
-          constexpr int arraySize = AC_WIN_SIZE_C*AC_WIN_SIZE_C;
+        //  constexpr int arraySize = AC_WIN_SIZE_C*AC_WIN_SIZE_C;
 
           ac_array<Pix_type,arraySize> flatten_window;
           ac_array<Pix_type,arraySize> sorted_window;
+		int i,j = 0;
+        #pragma hls_unroll yes
+        LOOP_Height: for(i=0;i<AC_WIN_SIZE_C;i++)
+        {
+			#pragma hls_unroll yes
+            LOOP_Width: for(j=0;j<AC_WIN_SIZE_C;j++)
+            {
+                flatten_window[i*AC_WIN_SIZE_C+j] = window_out[i][j]; 
+                
+            
+            }
+        }    
 
-          #pragma hls_unroll yes
-          for (int k = 0; k < arraySize; ++k) {
-            int i = k/AC_WIN_SIZE_C;
-            int j = k%AC_WIN_SIZE_C;
-            flatten_window[k] = window_out[i][j];
-          }
-
-          ac_math::ac_brick_sort<Pix_type,uint32_t(arraySize),true> sorter;
+        #pragma hls_unroll yes
+        LOOP_Padded: for(i = WN_SIZE_SQUARE;i<arraySize;i++)
+        {
+            flatten_window[i] = 0;
+        } 
+		          ac_math::ac_bitonic_sort<Pix_type,uint32_t(arraySize),false,false> sorter;
+         // ac_math::ac_brick_sort<Pix_type,uint32_t(arraySize),true> sorter;
           sorter.hardwareAcceleratedSort(flatten_window,sorted_window);
-          MedianValue = sorted_window[AC_WIN_SIZE_C*AC_WIN_SIZE_C/2];
+          MedianValue = sorted_window[(AC_WIN_SIZE_C*AC_WIN_SIZE_C)>>1];
         } else {
           MedianValue = Pix_type(0);
         }

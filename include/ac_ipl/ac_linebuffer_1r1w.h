@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2025.4                                              *
+ *  Software Version: 2026.1                                              *
  *                                                                        *
- *  Release Date    : Thu Dec 11 10:35:33 PST 2025                        *
+ *  Release Date    : Tue Feb 10 18:37:14 PST 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2025.4.1                                            *
+ *  Release Build   : 2026.1.0                                            *
  *                                                                        *
  *  Copyright 2023 Siemens                                                *
  *                                                                        *
@@ -121,12 +121,6 @@ public:
   }
 
 private: 
-    
-  //Usage of AC_BANK_ARRAY is not for production, it is enabled only if a Catapult provided AC_BANK_ARRAY library is included in the design.
-  #ifdef __AC_BANK_ARRAY_H
-  ac_bank_array_2D<IN_TYPE, TOTAL_LINES, AC_WIDTH> line_buffer;
-  #else
   IN_TYPE line_buffer[TOTAL_LINES][AC_WIDTH];
-  #endif
 };
 #endif
