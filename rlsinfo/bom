@@ -54,6 +54,7 @@
 ./include/ac_ipl/ac_dwt_a.h
 ./include/ac_ipl/ac_filter_2d.h
 ./include/ac_ipl/ac_filter_2d_framesync.h
+./include/ac_ipl/ac_framesync.h
 ./include/ac_ipl/ac_gamma.h
 ./include/ac_ipl/ac_harris.h
 ./include/ac_ipl/ac_opticalflow.h

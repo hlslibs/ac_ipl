@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.1                                              *
+ *  Software Version: 2026.2                                              *
  *                                                                        *
- *  Release Date    : Wed Mar 11 20:46:14 PDT 2026                        *
+ *  Release Date    : Thu May 14 10:31:24 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.1.1                                            *
+ *  Release Build   : 2026.2.0                                            *
  *                                                                        *
  *  Copyright 2023 Siemens                                                *
  *                                                                        *
@@ -100,6 +100,7 @@ public:
   typedef ac_boundary_2d<PIX_TYPE, AC_WIN_HEIGHT, AC_WIN_WIDTH, AC_PMODE, AC_BUS_WORDS, HIGH_SPEED_REPLICATE> BOUND_2D_TYPE;
   typedef ac_int<ac::nbits<AC_IMG_WIDTH>::val, false> W_TYPE;
   typedef ac_int<ac::nbits<AC_IMG_HEIGHT>::val, false> H_TYPE;
+  typedef bool VOUT_TYPE;
   typedef ac_flag_shift_2d<AC_WIN_HEIGHT, AC_WIN_WIDTH, AC_PMODE, AC_BUS_WORDS, AC_REPEAT> FSHIFT_2D_TYPE;
 
   enum {
