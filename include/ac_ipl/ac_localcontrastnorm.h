@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -39,6 +39,21 @@
 #include <ac_math/ac_sqrt_pwl.h>
 #include <ac_channel.h>
 #include <mc_scverify.h>
+
+// HDIP: ac_localcontrastnorm.h
+//
+// Description: "ac_localcontrastnorm" implements HLS-optimized hardware for local
+// contrast normalization.
+// The different stages of the local contrast normalization algorithms are coded as
+// private methods to the class which stream inputs to each other via ac_channel
+// interconnects.
+//
+// Configuration parameters:
+//
+// * @tparam CDEPTH          Color depth. Determines the input pixel bitwidth.
+// * @tparam W_MAX           Maximum image width.
+// * @tparam H_MAX           Maximum image height.
+// * @tparam USE_SINGLEPORT  Set to true to enable singleport mems. Default value is false.
 
 #pragma hls_design top
 template <unsigned CDEPTH, unsigned W_MAX, unsigned H_MAX, bool USE_SINGLEPORT = false>

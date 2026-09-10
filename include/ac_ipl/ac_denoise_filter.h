@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -40,6 +40,19 @@
 #include <ac_window_2d_flag.h>
 #include <ac_channel.h>
 #include <mc_scverify.h>
+
+// HDIP: ac_denoise_filter
+//
+// Description: "ac_denoise_filter" implements HLS-optimized hardware for image denoising.
+// The denoising is done through a median filter.
+// It is user-configurable via class template parameters as explained below.
+//
+// Configuration parameters:
+//
+// * @tparam CDEPTH          Color depth. Specifies pixel bitwidth.
+// * @tparam W_MAX           Maximum image width.
+// * @tparam H_MAX           Maximum image height.
+// * @tparam USE_SINGLEPORT  Set to true to enable singleport mems. Default value is false.
 
 template <unsigned CDEPTH, unsigned W_MAX, unsigned H_MAX, bool USE_SINGLEPORT = false>
 class ac_denoise_filter

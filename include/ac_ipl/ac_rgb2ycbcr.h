@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2025 Siemens                                                *
  *                                                                        *
@@ -28,8 +28,8 @@
  *  The most recent version of this package is available at github.       *
  *                                                                        *
  *************************************************************************/
-#ifndef _INCLUDED_AC_CSC_H_
-#define _INCLUDED_AC_CSC_H_
+#ifndef _INCLUDED_AC_RGB2YCBCR_H_
+#define _INCLUDED_AC_RGB2YCBCR_H_
 
 #if (defined(__GNUC__) && (__cplusplus < 201103L))
 #error Please use C++11 or a later standard for compilation.
@@ -45,7 +45,7 @@
 #include <ac_matrix.h>
 #include <ac_ipl/ac_pixels.h>
 
-#if !defined(__SYNTHESIS__) && defined(AC_CSC_H_DEBUG)
+#if !defined(__SYNTHESIS__) && defined(AC_RGB2YCBCR_H_DEBUG)
 #include <iostream>
 using namespace std;
 #endif
@@ -107,6 +107,25 @@ namespace ac_csc {
     }
   };
 
+  // HDIP: ac_rgb2ycbcr
+  //
+  // Description: Implements RGB-to-YCbCr color space conversion using fixed-point matrix
+  //  multiplication. Coefficients are selected at compile time via the Standard parameter,
+  //  supporting BT.601 (SDTV), BT.709 (HDTV), BT.2020 (UHD), and BT.2100 (UHD/HDR).
+  //  Full-swing and studio-swing output ranges are supported via the StudioSwing parameter.
+  //  Compile-time static_asserts enforce bit-depth and resolution constraints for each
+  //  standard. Pixels are streamed in and out via ac_channel.
+  //
+  // Configuration parameters:
+  //
+  // * @tparam PixIn_type       Input pixel type (must expose get_R/get_G/get_B accessors)
+  // * @tparam PixOut_type      Output pixel type for YCbCr samples
+  // * @tparam AcImgHeight      Maximum image height in pixels
+  // * @tparam AcImgWidth       Maximum image width in pixels
+  // * @tparam Q                ac_fixed quantization/rounding mode (default AC_TRN)
+  // * @tparam FractBits        Fractional bits for coefficient precision (default 18)
+  // * @tparam StudioSwing      When true, applies studio-swing output offset (default false)
+  // * @tparam Standard         Color standard providing coefficient matrix (default BT601)
   //Ac_matrix implementation with fixed point coeffs
   template <typename PixIn_type, typename PixOut_type, int AcImgHeight, int AcImgWidth, ac_q_mode Q = AC_TRN, int FractBits = 18, bool StudioSwing = false, typename Standard = ac_ipl::BT601<FractBits>>
   class ac_rgb2ycbcr

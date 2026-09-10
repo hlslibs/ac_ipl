@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2023 Siemens                                                *
  *                                                                        *
@@ -90,6 +90,19 @@
 #error Please use Microsoft VS 2019 or a later standard for compilation.
 #endif
 
+// HDIP: ac_flag_gen.h
+//
+// Description: "ac_flag_gen_1d" implements HLS-optimized hardware for 1D flag
+// generation. It can be used standalone to generate SOL and EOL flags for
+// image lines (provided that the image width is known) or used as a part of
+// ac_window_v2.h
+//
+// Configuration parameters:
+//
+// * @tparam AC_WIDTH      Maximum image width.
+// * @tparam AC_BUS_WORDS  Number of pixels processed per clock cycle. Default is 1.
+//
+
 template<int AC_WIDTH, int AC_BUS_WORDS = 1>
 class ac_flag_gen_1d
 {
@@ -151,6 +164,20 @@ private:
   W_TYPE line_width; // Width of the line being currently processed.
   bool incorrect_dim_change; // Did the dimension input change incorrectly?
 };
+
+// HDIP: ac_flag_gen.h
+//
+// Description: "ac_flag_gen_2d" implements HLS-optimized hardware for 2D flag
+// generation. It can be used standalone to generate SOF, EOF, SOL and EOL
+// flags for images (provided that the image width and height are known)
+// or used as a part of ac_window_v2.h
+//
+// Configuration parameters:
+//
+// * @tparam AC_WIDTH      Maximum image width.
+// * @tparam AC_HEIGHT     Maximum image height.
+// * @tparam AC_BUS_WORDS  Number of pixels processed per clock cycle. Default is 1.
+//
 
 template<int AC_WIDTH, int AC_HEIGHT, int AC_BUS_WORDS = 1>
 class ac_flag_gen_2d

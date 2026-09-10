@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -111,13 +111,22 @@
 #error Please use Microsoft VS 2019 or a later standard for compilation.
 #endif
 
-// Mandatory template parameters:
-// CDEPTH: Input/Output color depth.
-// W_MAX/H_MAX: Max. supported image width/height.
-// TEMP_MAX: Max. supported color temperature.
-// Optional template parameters:
-// R_WP, G_WP, B_WP: User defined white point of video. If all values are 0, the design deduces video white point from
-// previously processed input frames.
+// HDIP: ac_ctc.h
+//
+// Description: "ac_ctc" implements HLS-optimized hardware for color temperature correction.
+// Color temperature adjustments are made for a given set of RGB input pixels by obtaining
+// the ratio of the frame and reference white point values, and then multiplying each input
+// pixel by the ratio obtained.
+//
+// Configuration parameters:
+//
+// * @tparam CDEPTH            Input/Output color depth. Determines pixel bitwidth.
+// * @tparam W_MAX             Maximum image width.
+// * @tparam H_MAX             Maximum image height.
+// * @tparam TEMP_MAX          Maximum supported color temperature.
+// * @tparam R_WP, G_WP, B_WP  User defined white point of video. If all values are 0, the design deduces video white point from previously processed input frames. Defaults are 0.
+//
+
 template <unsigned CDEPTH, unsigned W_MAX, unsigned H_MAX, unsigned TEMP_MAX, unsigned R_WP = 0, unsigned G_WP = 0, unsigned B_WP = 0>
 class ac_ctc
 {

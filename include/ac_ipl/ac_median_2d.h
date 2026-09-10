@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2023 Siemens                                                *
  *                                                                        *
@@ -28,8 +28,8 @@
  *  The most recent version of this package is available at github.       *
  *                                                                        *
  *************************************************************************/
-#ifndef _INCLUDED_MEDIAN2D_HLS_H_
-#define _INCLUDED_MEDIAN2D_HLS_H_
+#ifndef _INCLUDED_AC_MEDIAN_2D_H_
+#define _INCLUDED_AC_MEDIAN_2D_H_
 
 #if (defined(__GNUC__) && (__cplusplus < 201103L))
 #error Please use C++17 or a later standard for compilation.
@@ -66,6 +66,23 @@ struct output_pixel_packet { // Renamed from ac_output_pixel_packet
 };
 // ----------------------------------------
 
+// HDIP: ac_median_2d.h
+//
+// Description: "ac_median_2d" implements HLS-optimized hardware for 
+// median filtering with dimension inputs. The output is the median of the
+// pixel values contained in a sliding window. The windowing is done with the
+// AC Window 2.0 Line Flushing IP.  The median is computed by using a bitonic
+// sorting algorithm.
+//
+// Configuration parameters:
+//
+// * @tparam Pix_type         Input pixel type.
+// * @tparam AC_IMG_HEIGHT_C  Maximum image width.
+// * @tparam AC_IMG_WIDTH_C   Maximum image height.
+// * @tparam AC_WIN_SIZE_C    Window size.
+// * @tparam BUFF_TYPE_C      Windowing mode. Used to instantiate AC Window 3.0 object.
+// * @tparam AC_PMODE_C       Boundary padding method.
+//
 
 template <class Pix_type, int AC_IMG_HEIGHT_C, int AC_IMG_WIDTH_C, int AC_WIN_SIZE_C, ac_buff_type BUFF_TYPE_C, ac_padding_method AC_PMODE_C>
 class ac_median_2d
@@ -93,7 +110,7 @@ public:
   ac_median_2d() {}
   #pragma hls_design interface
   #pragma hls_pipeline_init_interval 1
-  void CCS_BLOCK(run)(ac_channel<input_pixel_packet<Pix_type>> &din_packet,
+  void CCS_BLOCK(ac_median_2d,run)(ac_channel<input_pixel_packet<Pix_type>> &din_packet,
                       ac_channel<width_type> &width_ch, // Updated usage
                       ac_channel<height_type> &height_ch, // Updated usage
                       ac_channel<output_pixel_packet<Pix_type>> &dout_packet) {

@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2018 Siemens                                                *
  *                                                                        *
@@ -718,19 +718,19 @@ namespace ac_ipl
     YcbcrMatrix_type ycbcrMatrix;
 
     #pragma hls_waive CNS
-    if(CDEPTH == 8) {
+    if (CDEPTH == 8) {
       constY = 16;
       constCb = 128;
       constCr = 128;
     }
     #pragma hls_waive CNS
-    else if(CDEPTH == 10) {
+    else if (CDEPTH == 10) {
       constY = 64;
       constCb = 512;
       constCr = 512;
     }
     #pragma hls_waive CNS
-    else if(CDEPTH == 12) {
+    else if (CDEPTH == 12) {
       constY = 256;
       constCb = 2048;
       constCr = 2048;
@@ -744,13 +744,13 @@ namespace ac_ipl
     }  
 
     #pragma hls_waive CNS
-    if(!StudioSwing) {
+    if (!StudioSwing) {
       constY = 0;
     }
     #pragma hls_waive CNS
-    if(Standard::ID == BT601<FractBits>::ID) {
+    if (Standard::ID == BT601<FractBits>::ID) {
       #pragma hls_waive CNS
-      if(!StudioSwing) {
+      if (!StudioSwing) {
         // Y value
         Y = ((pixFixed_type)(ycbcrMatrix(0,0) + constY)).to_ac_int();
         YCBCR.set_Y(Y);
@@ -765,7 +765,7 @@ namespace ac_ipl
       }
       else {
         #pragma hls_waive CNS
-        if(CDEPTH == 8) {
+        if (CDEPTH == 8) {
           // Y value
           Y = ((pixFixed_type)((ycbcrMatrix(0,0)*(constFixed_type)(.8588)) + constY)).to_ac_int();
           YCBCR.set_Y(Y);
@@ -779,7 +779,7 @@ namespace ac_ipl
           YCBCR.set_Cr(CR);
         }
         #pragma hls_waive CNS
-        else if(CDEPTH == 10) {
+        else if (CDEPTH == 10) {
           // Y value
           Y = ((pixFixed_type)((ycbcrMatrix(0,0)*(constFixed_type)(.8565)) + constY)).to_ac_int();
           YCBCR.set_Y(Y);
@@ -795,9 +795,9 @@ namespace ac_ipl
       }
     }
     #pragma hls_waive CNS
-    else if(Standard::ID == BT709<FractBits>::ID) {
+    else if (Standard::ID == BT709<FractBits>::ID) {
       #pragma hls_waive CNS
-      if(!StudioSwing) {
+      if (!StudioSwing) {
         // Y value
         Y = ((pixFixed_type)(ycbcrMatrix(0,0) + constY)).to_ac_int();
         YCBCR.set_Y(Y);
@@ -812,7 +812,7 @@ namespace ac_ipl
       }
       else {
         #pragma hls_waive CNS
-        if(CDEPTH == 8) {
+        if (CDEPTH == 8) {
           // Y value
           Y = ((pixFixed_type)((ycbcrMatrix(0,0)*(constFixed_type)(.8588)) + constY)).to_ac_int();
           YCBCR.set_Y(Y);
@@ -826,7 +826,7 @@ namespace ac_ipl
           YCBCR.set_Cr(CR);
         }
         #pragma hls_waive CNS
-        else if(CDEPTH == 10) {
+        else if (CDEPTH == 10) {
           // Y value
           Y = ((pixFixed_type)((ycbcrMatrix(0,0)*(constFixed_type)(.8565)) + constY)).to_ac_int();
           YCBCR.set_Y(Y);
@@ -842,11 +842,11 @@ namespace ac_ipl
       }
     }    
     #pragma hls_waive CNS
-    else if(Standard::ID == BT2020<FractBits>::ID || Standard::ID == BT2100<FractBits>::ID) {
+    else if (Standard::ID == BT2020<FractBits>::ID || Standard::ID == BT2100<FractBits>::ID) {
       #pragma hls_waive CNS
-      if(!StudioSwing) {
+      if (!StudioSwing) {
         #pragma hls_waive CNS
-        if(CDEPTH == 10) {
+        if (CDEPTH == 10) {
           //Y value
           Y  = ((pixFixed_type)(ycbcrMatrix(0,0))).to_ac_int();
           YCBCR.set_Y(Y);
@@ -860,7 +860,7 @@ namespace ac_ipl
           YCBCR.set_Cr(CR); 
         }
         #pragma hls_waive CNS
-        else if(CDEPTH == 12) {
+        else if (CDEPTH == 12) {
           //Y value
           Y  = ((pixFixed_type)(ycbcrMatrix(0,0))).to_ac_int();
           YCBCR.set_Y(Y);
@@ -876,7 +876,7 @@ namespace ac_ipl
       }
       else {
         #pragma hls_waive CNS
-        if(CDEPTH == 10) {
+        if (CDEPTH == 10) {
           // Y value
           Y = ((pixFixed_type)((ycbcrMatrix(0,0)*(constFixed_type)(.876)) + constY)).to_ac_int();
           YCBCR.set_Y(Y);
@@ -890,7 +890,7 @@ namespace ac_ipl
           YCBCR.set_Cr(CR);
         }
         #pragma hls_waive CNS
-        else if(CDEPTH == 12) {
+        else if (CDEPTH == 12) {
           // Y value
           Y = ((pixFixed_type)((ycbcrMatrix(0,0)*(constFixed_type)(.3504)) + constY)).to_ac_int();
           YCBCR.set_Y(Y);

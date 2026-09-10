@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2023 Siemens                                                *
  *                                                                        *
@@ -228,7 +228,18 @@ class ac_packed_vector_helper {
   unsigned bit_index;
 };
 
-// Type T must define T::width, as well as support the slc() and set_slc() methods.
+// HDIP: ac_packed_vector.h
+//
+// Description: "ac_packed_vector" implements a container class which has where all the
+// data is concatenated in a single ac_int<N, false> member variable where
+// N = Bitwidth of base type*number of words.
+//
+// Configuration parameters:
+//
+// * @tparam T         Base type. Must define T::width, slc() and set_slc() methods.
+// * @tparam AC_WORDS  Number of words.
+//
+
 template<typename T, int AC_WORDS>
 class ac_packed_vector
 {

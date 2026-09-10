@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -314,6 +314,27 @@ struct dwt2_pyr_type_check<ac_ipl::RGB_imd<ac_int<W1, false> >, ac_ipl::RGB_imd<
 };
 
 #include <mc_scverify.h>
+
+// HDIP: ac_dwt2_pyr.h
+//
+// Description: "ac_dwt2_pyr" implements HLS-optimized hardware for the two-dimensional
+// wavelet pyramid algorithm. It is pipelined with an II of 1 by default and works on greyscale
+// and color inputs.
+// It supports adjustable precision for the internal accumulations, easy switching between
+// singleport and dualport linebuffers and adjustable image dimensions.
+//
+// Configuration parameters:
+//
+// * @tparam DWT_FN_VAL  Specifies the wavelet implementation. Allowed values: AC_HAAR and AC_DB2.
+// * @tparam IN_TYPE     Input pixel type, can be ac_int or RGB_imd<ac_int>.
+// * @tparam OUT_TYPE    Input pixel type, can be ac_fixed or RGB_imd<ac_fixed>.
+// * @tparam W_MAX       Maximum image width.
+// * @tparam H_MAX       Maximum image height.
+// * @tparam N_LEVELS    Number of levels for the transform. Values up to 10 are supported.
+// * @tparam ACC_W       Bitwidth of accumulator variables. Default value is 32.
+// * @tparam ACC_I       Integer width of accumulator variables Default value is 16.
+// * @tparam USE_SP      Set to true to enable singleport mems. Default value is true.
+//
 
 #pragma hls_design top
 template <ac_dwt2_function DWT_FN_VAL, class IN_TYPE, class OUT_TYPE, int W_MAX, int H_MAX, int N_LEVELS, int ACC_W = 32, int ACC_I = 16, bool USE_SP = true>

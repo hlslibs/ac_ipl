@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -428,12 +428,21 @@ private:
   bool weightEnbuff;
 };
 
-//============================================================================================================
-// Class: ac_filter2d
-// Description:
-//      This class controls the over all operations for convolution and control logic of PE Array. It includes
-//      loading of the configuration data Kernel weight streaming in and out the feature maps.
-//============================================================================================================
+// HDIP: ac_filter2d
+//
+// Description: Implements a 2D convolution filter with support for dynamic kernel and image
+//  sizes. The design uses a PE (Processing Element) array fed by line buffers to perform
+//  spatial convolution. Filter weights and image configuration are streamed in via ac_channel
+//  before pixel data. Zero-padding of width PADDING is applied to all image borders. Output
+//  samples are written to an ac_channel and include an accompanying valid flag.
+//
+// Configuration parameters:
+//
+// * @tparam pType            Data type for input and output pixel samples
+// * @tparam WIDTH            Maximum image width (excluding padding)
+// * @tparam HEIGHT           Maximum image height (excluding padding)
+// * @tparam KSIZE            Convolution kernel dimension (KSIZExKSIZE)
+// * @tparam PADDING          Number of zero-padding pixels added to each image border
 
 #pragma hls_design top
 template <class pType, int WIDTH, int HEIGHT, int KSIZE, int PADDING>

@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -40,8 +40,8 @@
 //  Conversely If gamma_in is greater than 1, the mapping is weighted toward lower (darker) output values or is called gamma_in decoding or gamma_in expansion.
 //*********************************************************************************************************
 
-#ifndef _INCLUDED_GAMMA_H_
-#define _INCLUDED_GAMMA_H_
+#ifndef _INCLUDED_AC_GAMMA_H_
+#define _INCLUDED_AC_GAMMA_H_
 
 #include <ac_int.h>
 #include <ac_channel.h>
@@ -55,6 +55,20 @@
 #include <mc_scverify.h>
 
 using namespace std;
+
+// HDIP: ac_gamma.h
+//
+// Description: "ac_gamma" implements HLS-optimized hardware for gamma
+// correction on RGB images.
+// It is user-configurable via class template parameters as explained below.
+//
+// Configuration parameters:
+//
+// * @tparam PIX_TYP                RGB pixel type. Pixel data is concatenated into an ac_packed_vector.
+// * @tparam CDEPTH                 Color depth.
+// * @tparam gamma_in_width         Bitwidth of ac_fixed variable used for intermediate computations. Default is 18.
+// * @tparam gamma_in_integer_bits  Integer width of ac_fixed variable used for intermediate computations. Default is 2.
+//
 
 #pragma hls_design
 template <class PIX_TYP, unsigned CDEPTH, unsigned gamma_in_width=18, unsigned gamma_in_integer_bits=2>

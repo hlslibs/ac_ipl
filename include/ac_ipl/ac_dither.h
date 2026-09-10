@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -141,15 +141,26 @@ struct T_info<ac_ipl::RGB_1PPC<W1>, ac_ipl::RGB_1PPC<W2>, pSumW, pSumI, pSumQ, p
   typedef ac_ipl::RGB_imd<ac_int<2*pSumW, false> > buff2XType;
 };
 
-// Mandatory template parameters:
-// IN_TYPE: Input Pixel Type
-// OUT_TYPE: Output Pixel Type
-// W_MAX: Max. Supported Width
-// H_MAX: Max. Supported Height
-// Optional template parameters:
-// use_sp: Lets the user specify whether they want singleport memories or not
-// pSumW and pSumI: Word and Integer width of intermediate computation variable
-// pSumQ and pSumO: Quantization and overflow modes of the intermediate computation variable, respectively
+// HDIP: ac_dither.h
+//
+// Description: "ac_dither" implements HLS-optimized hardware for Floyd-Steinberg Dithering
+// for greyscale and color images.
+// It supports adjustable precision for the dithering calculations, easy switching between
+// singleport and dualport linebuffers and adjustable image dimensions.
+//
+// Configuration parameters:
+//
+// * @tparam IN_TYPE   Input pixel type, can be ac_int or RGB_1PPC.
+// * @tparam OUT_TYPE  Output pixel type, can be ac_int or RGB_1PPC.
+// * @tparam W_MAX     Maximum image width.
+// * @tparam H_MAX     Maximum image height.
+// * @tparam use_sp    Set to true to enable singleport mems. Default value is false.
+// * @tparam pSumW     Bitwidth of intermediate computation variable. Default value is 32.
+// * @tparam pSumI     Integer width of intermediate variable. Default value is 16.
+// * @tparam pSumQ     Quantization mode of intermediate variable. Default value is AC_TRN.
+// * @tparam pSumO     Overflow mode of intermediate variable. Default value is AC_SAT.
+//
+
 template <class IN_TYPE, class OUT_TYPE, unsigned W_MAX, unsigned H_MAX, bool use_sp = false, int pSumW = 32, int pSumI = 16, ac_q_mode pSumQ = AC_TRN, ac_o_mode pSumO = AC_SAT>
 class ac_dither
 {

@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2023 Siemens                                                *
  *                                                                        *
@@ -46,6 +46,22 @@ enum ac_buff_type {AC_DUAL,
                    AC_SPWRMASK,
                    AC_SPCIR
                   };
+
+// HDIP: ac_linebuffer.h
+//
+// Description: "ac_linebuffer" implements HLS-optimized hardware for linebuffering.
+// Multiple memory mappings for the linebuffers are supported.
+// It can be used standalone or as a part of or used as a part of ac_window_v2.h
+//
+// Configuration parameters:
+//
+// * @tparam INPUT_TYPE    Input pixel type, which is an ac_packed_vector. Multiple adjacent pixels can be sent at the same time through the packed vector input.
+// * @tparam OUTPUT_TYPE   Output pixel type. Can be ac_array<INPUT_TYPE, AC_NUM_LINES> or ac_array<INPUT_TYPE::base_type, AC_NUM_LINES, INPUT_TYPE::packed_words>
+// * @tparam AC_WIDTH      Maximum image width.
+// * @tparam AC_NUM_LINES  Number of lines in the buffer.
+// * @tparam BUFF_TYPE     Buffer type. Allowed values: AC_DUAL, AC_SPSHIFT, AC_SPWRMASK, AC_SPCIR.
+// * @tparam AC_REPEAT     Specifies if line repetition is used for applications like image resizing. Default value is false.
+//
 
 // Top level ac_linebuffer class.
 template<typename INPUT_TYPE, typename OUTPUT_TYPE, int AC_WIDTH, int AC_NUM_LINES, ac_buff_type BUFF_TYPE, bool AC_REPEAT=0>

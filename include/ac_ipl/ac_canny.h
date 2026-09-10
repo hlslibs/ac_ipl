@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -39,6 +39,25 @@
 #include <ac_math/ac_atan_pwl.h>
 #include <ac_channel.h>
 #include <mc_scverify.h>
+
+// HDIP: ac_canny
+//
+// Description: "ac_canny" implements HLS-optimized hardware for canny edge detection.
+// It accepts greyscale image inputs and produces a stream of 1-bit outputs which
+// indicate whether an edge was detected at a given image coordinate.
+// The edge detection is done via a multi-block design with different sub-blocks
+// handling gaussian smoothing, sobel edge detection, non-maximum suppression and
+// hysteresis thresholding.
+// The end result is an edge detection output which is far cleaner than naive edge
+// detection through a simple image filtering operation.
+//
+// Configuration parameters:
+//
+// * @tparam CDEPTH          Color depth. Determines the input pixel bitwidth.
+// * @tparam W_MAX           Maximum image width.
+// * @tparam H_MAX           Maximum image height.
+// * @tparam USE_SINGLEPORT  Set to true to enable singleport mems. Default value is false.
+//
 
 template <unsigned CDEPTH, unsigned W_MAX, unsigned H_MAX, bool USE_SINGLEPORT = false>
 class ac_canny

@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -88,11 +88,18 @@ struct imhistTypeInfo<W_MAX, H_MAX, ac_ipl::RGB_1PPC<W> > {
   typedef ac_ipl::RGB_imd<ac_int<ac::nbits<W_MAX*H_MAX>::val, false> > histArrType;
 };
 
-// Template parameters:
-// IN_TYPE: Input Pixel Type
-// OUT_BW: Bitwidth of output
-// W_MAX: Max. Supported Width
-// H_MAX: Max. Supported Height
+// HDIP: ac_imhist.h
+//
+// Description: "ac_imhist" implements HLS-optimized hardware for image histogram computation.
+// The input is a stream of image pixels and the output is a stream of pixel counts.
+//
+// Configuration parameters:
+//
+// * @tparam IN_TYPE           Input pixel type.
+// * @tparam OUT_BW            Output bitwidth.
+// * @tparam W_MAX             Maximum image width.
+// * @tparam H_MAX             Maximum image height.
+
 template <class IN_TYPE, int OUT_BW, unsigned W_MAX, unsigned H_MAX>
 class ac_imhist
 {

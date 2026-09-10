@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -238,13 +238,25 @@ struct gaussian_pyr_type_check<ac_ipl::RGB_imd<ac_int<I, false> >, ac_ipl::RGB_i
   enum { match = true };
 };
 
-// Template arguments:
-// IN_TYPE: Input type.
-// OUTPUT_TYPE: Output type.
-// W_MAX/H_MAX: Max input width/height, respectively.
-// N_LEVELS: Number of pyramid levels.
-// MAX_FRAC_BITS: Max number of fractional bits allocated for interconnect output.
-// USE_SP: Set to true if using singleport memories, set to false otherwise.
+// HDIP: ac_gaussian_pyr.h
+//
+// Description: "ac_gaussian_pyr" implements HLS-optimized hardware for the two-dimensional
+// gaussian pyramid algorithm. It is pipelined with an II of 1 by default and works on greyscale
+// and color inputs.
+// It supports adjustable precision for the interconnect data, easy switching between
+// singleport and dualport linebuffers and adjustable image dimensions.
+//
+// Configuration parameters:
+//
+// * @tparam IN_TYPE        Input pixel type, can be ac_int or RGB_imd<ac_int>.
+// * @tparam OUT_TYPE       Input pixel type, can be ac_fixed or RGB_imd<ac_fixed>.
+// * @tparam W_MAX          Maximum image width.
+// * @tparam H_MAX          Maximum image height.
+// * @tparam N_LEVELS       Number of pyramid levels. Values up to 10 are supported.
+// * @tparam MAX_FRAC_BITS  Max number of fractional bits allocated for interconnect output. Default value is 16.
+// * @tparam USE_SP         Set to true to enable singleport mems. Default value is true.
+//
+
 #pragma hls_design top
 template <class IN_TYPE, class OUT_TYPE, int W_MAX, int H_MAX, int N_LEVELS, int MAX_FRAC_BITS = 16, bool USE_SP = true>
 class ac_gaussian_pyr {

@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -64,6 +64,21 @@ T max(T *a)
 {
   return max_s<N>::max(a);
 }
+
+// HDIP: ac_harris.h
+//
+// Description: "ac_harris" implements HLS-optimized hardware for harris corner detection.
+// It can be pipelined with an II of 1.
+//
+// Configuration parameters:
+//
+// * @tparam IN_TYPE         Input pixel type.
+// * @tparam OUT_TYPE        Output pixel type.
+// * @tparam CDEPTH          Color depth of input image.
+// * @tparam W_MAX           Maximum image width.
+// * @tparam H_MAX           Maximum image height.
+// * @tparam USE_SINGLEPORT  Set to true to enable singleport mems. Default value is false.
+//
 
 #pragma hls_design top
 template <class IN_TYPE, class OUT_TYPE, unsigned CDEPTH, unsigned W_MAX, unsigned H_MAX, bool USE_SINGLEPORT = false>

@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Image Processing Library                           *
  *                                                                        *
- *  Software Version: 2026.2                                              *
+ *  Software Version: 2026.3                                              *
  *                                                                        *
- *  Release Date    : Tue Jun 30 15:08:22 PDT 2026                        *
+ *  Release Date    : Wed Sep  2 19:59:14 PDT 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2026.2.1                                            *
+ *  Release Build   : 2026.3.0                                            *
  *                                                                        *
  *  Copyright 2019 Siemens                                                *
  *                                                                        *
@@ -74,8 +74,8 @@
 //
 //***************************************************************************
 
-#ifndef _INCLUDED_AC_WAVELET_ANALYSIS_H_
-#define _INCLUDED_AC_WAVELET_ANALYSIS_H_
+#ifndef _INCLUDED_AC_DWT_A_H_
+#define _INCLUDED_AC_DWT_A_H_
 
 #include <ac_int.h>
 #include <ac_fixed.h>
@@ -91,11 +91,19 @@
 #error Please use Microsoft VS 2019 or a later standard for compilation.
 #endif
 
-// ac_dwt_a template parameters
-// LENGTH: Length of input signal
-// BPS:    Bits per Sample
-// NFT:    Number of filter tabs
-// CFP:    Coefficient Precision
+// HDIP: ac_dwt_a.h
+//
+// Description: "ac_dwt_a" implements HLS-optimized hardware for the Discrete Wavelet
+// Transform. The design is a sample-based streaming design. The output is down
+// sampled by two. The High-Pass and Low-Pass filters are implemented in Direct Form.
+//
+// Configuration parameters:
+//
+// * @tparam LENGTH  Length of input signal.
+// * @tparam BPS     Bits per Sample.
+// * @tparam NFT     Number of filter tabs.
+// * @tparam CFP     Coefficient Precision.
+//
 
 template <int LENGTH, int BPS, int NFT = 4, int CFP = 19 >
 class ac_dwt_a
